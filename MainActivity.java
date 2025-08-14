@@ -1,178 +1,68 @@
-package com.example.calculator;
+package com.example.sharedpreferances;
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
-    Button
-            button0, button1, button2, button3, button4, button5, button6, button7, button8, button9, buttonC, button10,buttonAdd,buttonSub,buttonMul,buttonDiv,buttonEql;
-    EditText result;
-    float mValueOne, mValueTwo;
-    boolean addition, subtract, multiplication, division;
+    EditText usernameEt, mobileEt, emailEt, pass1Et, pass2Et;
+    Button submitBtn;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button0 = (Button) findViewById(R.id.button0);
-        button1 = (Button) findViewById(R.id.button1);
-        button2 = (Button) findViewById(R.id.button2);
-        button3 = (Button) findViewById(R.id.button3);
-        button4 = (Button) findViewById(R.id.button4);
-        button5 = (Button) findViewById(R.id.button5);
-        button6 = (Button) findViewById(R.id.button6);
-        button7 = (Button) findViewById(R.id.button7);
-        button8 = (Button) findViewById(R.id.button8);
-        button9 = (Button) findViewById(R.id.button9);
-        button10 = (Button) findViewById(R.id.button10);
-        buttonC = (Button) findViewById(R.id.buttonC);
-        buttonAdd = (Button) findViewById(R.id.buttonAdd);
-        buttonSub = (Button) findViewById(R.id.buttonSub);
-        buttonMul = (Button) findViewById(R.id.buttonMul);
-        buttonDiv = (Button) findViewById(R.id.buttonDiv);
-        buttonEql = (Button) findViewById(R.id.buttonEql);
-        result = (EditText) findViewById(R.id.edt1);
-        button1.setOnClickListener(new View.OnClickListener() {
+        usernameEt = (EditText) findViewById(R.id.username);
+        mobileEt = (EditText) findViewById(R.id.mobile);
+        emailEt = (EditText) findViewById(R.id.Email);
+        pass1Et = (EditText) findViewById(R.id.password);
+        pass2Et = (EditText) findViewById(R.id.repass);
+        submitBtn = (Button) findViewById(R.id.submit);
+        sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                result.setText(result.getText() + "1");
-            }
-        });
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "2");
-            }
-        });
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "3");
-            }
-        });
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "4");
-            }
-        });
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "5");
-            }
-        });
-        button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "6");
-            }
-        });
-        button7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "7");
-            }
-        });
-        button8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "8");
-            }
-        });
-        button9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "9");
-            }
-        });
-        button0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(result.getText() + "0");
-            }
-        });
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (result == null) {
-                    result.setText("");
-                } else {
-                    mValueOne = Float.parseFloat(result.getText() + "");
-                    addition = true;
-                    result.setText(null);
+                String username = usernameEt.getText().toString().trim();
+                int mobile = Integer.parseInt(mobileEt.getText().toString().trim());
+                String email = emailEt.getText().toString().trim();
+                String pass1 = pass1Et.getText().toString().trim();
+                String pass2 = pass2Et.getText().toString().trim();
+                if (username.isEmpty()) {
+                    usernameEt.setError("Username is empty");
+                    usernameEt.requestFocus();
+                    return;
                 }
-            }
-        });
-        buttonSub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (result == null) {
-                    result.setText(" ");
-                } else {
-                    mValueOne = Float.parseFloat(result.getText() + " ");
-                    subtract = true;
-                    result.setText(null);
+                if (email.isEmpty()) {
+                    emailEt.setError("Input email");
+                    emailEt.requestFocus();
+                    return;
                 }
-            }
-        });
-        buttonMul.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (result == null) {
-                    result.setText(" ");
-                } else {
-                    mValueOne = Float.parseFloat(result.getText() + " ");
-                    multiplication = true;
-                    result.setText(null);
+                if (pass2.isEmpty()) {
+                    pass1Et.setError("Enter Password");
+                    pass1Et.requestFocus();
+                    return;
                 }
-            }
-        });
-        buttonDiv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (result == null) {
-                    result.setText(" ");
-                } else {
-                    mValueOne = Float.parseFloat(result.getText() + " ");
-                    division = true;
-                    result.setText(null);
+                if (pass1.length() < 6) {
+                    pass1Et.setError("Length must be minimum 6 characters");
+                    pass1Et.requestFocus();
+                    return;
                 }
-            }
-        });
-        buttonC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(" ");
-            }
-        });
-        button10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result.setText(".");
-            }
-        });
-        buttonEql.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mValueTwo = Float.parseFloat(result.getText() + "");
-                if (addition == true) {
-                    result.setText(mValueOne + mValueTwo + "");
-                    addition = false;
+                if (!pass2.equals(pass1)) {
+                    pass2Et.setError("Password not matched");
+                    pass2Et.requestFocus();
+                    return;
                 }
-                if (subtract == true) {
-                    result.setText(mValueOne - mValueTwo + "");
-                    subtract = false;
-                }
-                if (multiplication == true) {
-                    result.setText(mValueOne * mValueTwo + "");
-                    multiplication = false;
-                }
-                if (division == true) {
-                    result.setText(mValueOne / mValueTwo + "");
-                    division = false;
-                }
+                Toast.makeText(MainActivity.this, "Registration successfull", Toast.LENGTH_LONG).show();
+                editor.putString("keyusername", username);
+                editor.putInt("keymobile", mobile);
+                editor.putString("keymail", email);
+                editor.putString("keypassword", pass2);
+                editor.apply();
             }
         });
     }
